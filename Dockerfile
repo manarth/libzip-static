@@ -38,4 +38,4 @@ LABEL libzip.version=${VER}
 LABEL org.opencontainers.image.source https://github.com/${OWNER}/${REPO}
 
 STOPSIGNAL SIGTERM
-COPY --from=build //opt/libzip/build/lib/libzip.a /libzip.a
+COPY --from=build //opt/libzip/build/lib/libzip.a /lib/libzip.a
