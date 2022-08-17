@@ -1,5 +1,7 @@
 ARG SRC="https://github.com/nih-at/libzip.git"
 ARG VER="v1.9.2"
+ARG OWNER=manarth
+ARG REPO=libzip-static
 
 FROM alpine:3.16 as build
 ARG SRC
@@ -28,9 +30,12 @@ RUN cmake --build build
 FROM scratch as dist
 ARG SRC
 ARG VER
+ARG OWNER
+ARG REPO
 
 LABEL libzip.source=${SRC}
 LABEL libzip.version=${VER}
+LABEL org.opencontainers.image.source https://github.com/${OWNER}/${REPO}
 
 STOPSIGNAL SIGTERM
 COPY --from=build //opt/libzip/build/lib/libzip.a /libzip.a
