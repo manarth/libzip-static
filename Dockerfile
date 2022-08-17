@@ -1,7 +1,7 @@
 ARG SRC="https://github.com/nih-at/libzip.git"
 ARG VER="v1.9.2"
 
-FROM alpine:3.16
+FROM alpine:3.16 as build
 ARG SRC
 ARG VER
 
@@ -23,3 +23,14 @@ RUN  cmake -B build -G Ninja \
        -DCMAKE_BUILD_TYPE=MinSizeRel
 
 RUN cmake --build build
+
+# Package to a minimal release.
+FROM scratch as dist
+ARG SRC
+ARG VER
+
+LABEL libzip.source=${SRC}
+LABEL libzip.version=${VER}
+
+STOPSIGNAL SIGTERM
+COPY --from=build //opt/libzip/build/lib/libzip.a /libzip.a
